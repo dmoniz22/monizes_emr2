@@ -25,7 +25,7 @@ package oscar.login.jaas;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.security.acl.Group;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;

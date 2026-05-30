@@ -25,7 +25,6 @@ package oscar.login.jaas;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
