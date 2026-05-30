@@ -59,7 +59,7 @@
 
 	<!-- TransactionManager -->
 	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager" autowire="byName" />
-	<tx:annotation-driven transaction-manager="txManager" />
+	<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true" />
 
 	<!-- Managed Beans -->
 	<context:component-scan base-package="org.oscarehr.common.dao" />
