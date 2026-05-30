@@ -1,0 +1,294 @@
+<%--
+
+    Copyright (c) 2001-2002. Department of Family Medicine, McMaster University. All Rights Reserved.
+    This software is published under the GPL GNU General Public License.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+    This software was written for the
+    Department of Family Medicine
+    McMaster University
+    Hamilton
+    Ontario, Canada
+
+--%>
+
+
+<%@page import="java.util.*" %>
+<%@page import="org.apache.commons.lang.StringUtils"%>
+<%@page import="org.apache.logging.log4j.Logger"%>
+
+<%@page import="org.oscarehr.util.SpringUtils"%>
+<%@page import="org.oscarehr.common.model.Provider"%>
+<%@page import="org.oscarehr.PMmodule.dao.ProviderDao"%>
+<%@page import="org.oscarehr.common.dao.UserPropertyDAO"%>
+<%@page import="org.oscarehr.common.model.UserProperty"%>
+<%@page import="org.oscarehr.util.MiscUtils"%>
+
+<%@page import="net.sf.json.JSONException"%>
+<%@page import="net.sf.json.JSONSerializer"%>
+<%@page import="net.sf.json.JSONArray"%>
+<%@page import="net.sf.json.JSONObject"%>
+<%@page import="org.owasp.encoder.Encode"%>
+
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
+<%
+Logger logger = org.oscarehr.util.MiscUtils.getLogger();
+
+String curProviderNo = (String) session.getAttribute("user");
+ProviderDao providerDao = (ProviderDao)SpringUtils.getBean("providerDao");
+Provider provider = providerDao.getProvider(curProviderNo);
+
+logger.info("user: " + curProviderNo);
+List<Provider> providerList = null;
+providerList = providerDao.getActiveProviders();
+
+%>
+<!DOCTYPE HTML>
+<html>
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labMacroPrefs.msgPrefs"/></title>
+
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" media="all" href="${pageContext.request.contextPath}/library/bootstrap/3.0.0/css/bootstrap.min.css">
+<script src="${pageContext.request.contextPath}/js/jquery-1.12.3.js"></script>
+<!-- Include all compiled plugins (below) -->
+<script src="${pageContext.request.contextPath}/library/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+<script>
+function assembleJSON() {
+    let macros = [];
+    const elements = document.querySelectorAll('[id^="macro_"]');
+
+    elements.forEach(el => {
+        // Check if element is visible
+        if (window.getComputedStyle(el).display !== 'none') {
+            let suffix = el.id.split('_')[1];
+            let nameField = document.getElementById('name_' + suffix);
+
+            // Check if name field exists and has length > 1
+            if (nameField && nameField.value.length > 1) {
+                let commentField = document.getElementById('comment_' + suffix);
+                let ticklerTo = document.getElementById('ticklerTo_' + suffix);
+                let messageField = document.getElementById('message_' + suffix);
+                let quantityField = document.getElementById('quantity_' + suffix);
+                let timeUnitsField = document.getElementById('timeUnits_' + suffix);
+
+                let macroObj = {
+                    name: nameField.value,
+                    acknowledge: {
+                        comment: commentField ? commentField.value : ''
+                    },
+                    closeOnSuccess: true
+                };
+
+                // Add tickler if it exists
+                if (ticklerTo && ticklerTo.value.length > 0) {
+                    macroObj.tickler = {
+                        taskAssignedTo: ticklerTo.value,
+                        message: messageField ? messageField.value : ''
+                    };
+
+                    if (quantityField && parseInt(quantityField.value) > 0) {
+                        macroObj.tickler.quantity = quantityField.value;
+                        macroObj.tickler.timeUnits = timeUnitsField ? timeUnitsField.value : '';
+                    }
+                }
+                macros.push(macroObj);
+            }
+        }
+    });
+
+    let jsonStr = macros.length > 0 ? JSON.stringify(macros) : '';
+    let jsonOutput = document.getElementById('macroJSON');
+    if (jsonOutput) {
+        jsonOutput.value = jsonStr;
+    }
+}
+
+function toggleMe(el){
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+}
+
+</script>
+<style>
+    .MainTableTopRow {
+        background-color: gainsboro;
+    }
+</style>
+
+</head>
+<body>
+
+<table style="width:100%" id="scrollNumber1">
+	<tr class="MainTableTopRow">
+		<td class="MainTableTopRowLeftColumn"><H4>&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labMacroPrefs.msgPrefs" /></H4></td>
+		<td style="text-align:center;" class="MainTableTopRowRightColumn"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labMacroPrefs.title" /></td>
+	</tr>
+</table>
+			<!-- form starts here -->
+
+<form name="setProviderNoteStaleDateForm" method="post" action="${pageContext.request.contextPath}/setProviderStaleDate.do">
+<input type="hidden" name="method" value="saveLabMacroPrefs">
+<div class="container"><br>
+
+<%
+String method = request.getParameter("method");
+if (method.equals("saveLabMacroPrefs")) {
+%>
+    <div class="alert alert-success"><fmt:setBundle basename="oscarResources"/><fmt:message key="provider.labMacroPrefs.msgSuccess" /></div>
+<% } %>
+<%
+    UserPropertyDAO upDao = SpringUtils.getBean(UserPropertyDAO.class);
+    UserProperty up = upDao.getProp(curProviderNo,UserProperty.LAB_MACRO_JSON);
+    if(up != null && !StringUtils.isEmpty(up.getValue())) {
+
+    %>
+<%
+    try {
+//[{"name":"APT","acknowledge":{"comment":"APT"},"tickler":{"taskAssignedTo":"101","message":"APT"},"closeOnSuccess":true},{"name":"TBS","acknowledge":{"comment":"TBS"},"tickler":{"taskAssignedTo":"101","message":"TBS"},"closeOnSuccess":true}]
+        JSONArray macros = (JSONArray) JSONSerializer.toJSON(up.getValue());
+            if(macros != null) {
+                for(int x=0;x<macros.size();x++) {
+                JSONObject macro = macros.getJSONObject(x);
+                String name = macro.getString("name");
+                String comment = "";
+                String ticklerTo = "";
+                String message = "";
+                String quantity = "0";
+                String timeUnits = "1";
+                if(macro.has("acknowledge")){
+                    comment = Encode.forHtmlAttribute(macro.getJSONObject("acknowledge").getString("comment"));
+                }
+                if(macro.has("tickler")){
+                    ticklerTo = Encode.forHtmlAttribute(macro.getJSONObject("tickler").getString("taskAssignedTo"));
+                    message = Encode.forHtmlAttribute(macro.getJSONObject("tickler").getString("message"));
+                    if(macro.getJSONObject("tickler").has("quantity") && macro.getJSONObject("tickler").has("timeUnits")){
+                        quantity = Encode.forHtmlAttribute(macro.getJSONObject("tickler").getString("quantity"));
+                        timeUnits = Encode.forHtmlAttribute(macro.getJSONObject("tickler").getString("timeUnits"));
+                    }
+                }
+                boolean closeOnSuccess = macro.has("closeOnSuccess") && macro.getBoolean("closeOnSuccess");
+
+%>
+<!--<script>
+console.log("macro named " + "<%=name%>" + " with comment of " + "<%=comment%>" + " and perhaps a tickler for " + "<%=ticklerTo%>" + " message " + "<%=message%>" + " in " + "<%=quantity%>" + " " + "<%=timeUnits%>" + "/1");
+</script> -->
+ <div class="form-group row" id="macro_<%=x%>">
+
+    <div class="col-sm-2">
+     <label for="name_<%=x%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.macro" /></label><br><input type="text" id="name_<%=x%>" class="" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="name" />" style="width:90px;" value="<%=name%>">
+    </div>
+
+    <div class="col-sm-3">
+     <label for="comment_<%=x%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="caseload.msgLab" />&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment" /></label><br><input type="text" id="comment_<%=x%>" class="" style="width:95%;" value="<%=comment%>" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment" />">
+    </div>
+
+    <div class="col-sm-2">
+      <%
+        String val1 = ticklerTo;
+        if(val1 == null) val1 = "";
+        %>
+		    <label for="ticklerTo_<%=x%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgAssignedTo" /></label><br><select id="ticklerTo_<%=x%>" name="ticklerTo_<%=x%>" class="form-control input-sm" style="width:95%;">
+            <option value="" <%=(val1.equals("")?" selected=\"selected\"":"") %> >-</option>
+			<%for(Provider p: providerList) {%>
+				<option value="<%=p.getProviderNo()%>"<%=(val1.equals(p.getProviderNo())?" selected=\"selected\"":"") %>><%=Encode.forHtmlAttribute(p.getFullName())%></option>
+						<%}%>
+			</select>
+    </div>
+    <div class="col-sm-2 ">
+     <label for="message_<%=x%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler" /></label><br><input type="text" id="message_<%=x%>" class="" style="width:95%;" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgMessage" />" value="<%=message%>">
+    </div>
+    <div class="col-sm-3 ">
+     <label for="quantity_<%=x%>"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgDate" /></label><br><input type="number" id="quantity_<%=x%>" class="" style="width:50px;" value="<%=quantity%>"><select id="timeUnits_<%=x%>"  style="width:80px;">
+            <option value="1" <%=(timeUnits.equals("1")?" selected=\"selected\"":"") %>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.days" /></option>
+            <option value="7" <%=(timeUnits.equals("7")?" selected=\"selected\"":"") %>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.weeks" /></option>
+            <option value="30" <%=(timeUnits.equals("30")?" selected=\"selected\"":"") %>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.months" /></option>
+            <option value="365" <%=(timeUnits.equals("365")?" selected=\"selected\"":"") %>><fmt:setBundle basename="oscarResources"/><fmt:message key="global.years" /></option>
+        </select>
+    </div>
+    <div class="col-sm-2">
+     &nbsp;<input type="button" id="delete_<%=x%>" class="btn btn-link" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnDelete" />" onclick="document.getElementById('macro_<%=x%>').style.display = 'none';">
+    </div>
+ </div>
+
+        <%
+                }
+            }
+        }catch(JSONException e ) {
+            MiscUtils.getLogger().error("Invalid JSON for lab macros",e);
+		}
+}
+%>
+
+ <div class="form-group row" id="macro_new">
+
+    <div class="col-sm-2">
+     <label for="name_new"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.macro" /></label><br><input type="text" id="name_new" class="" style="width:90px;" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="name" />" value="">
+    </div>
+
+    <div class="col-sm-3">
+     <label for="comment_new"><fmt:setBundle basename="oscarResources"/><fmt:message key="caseload.msgLab" />&nbsp;<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment" /></label><br><input type="text" id="comment_new" class="" style="width:95%;" value="" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="oscarMDS.segmentDisplay.btnComment" />">
+    </div>
+
+    <div class="col-sm-2">
+
+					<label for="ticklerTo_new"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgAssignedTo" /></label><select id="ticklerTo_new" name="ticklerTo_new" class="form-control input-sm" style="width:95%;">
+					<option value="" selected="selected">-</option>
+					<%for(Provider p: providerList) {%>
+						<option value="<%=p.getProviderNo()%>"><%=Encode.forHtmlAttribute(p.getFullName())%></option>
+						<%}%>
+					</select>
+    </div>
+    <div class="col-sm-2">
+     <label for="message_new"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.tickler" /></label><br><input type="text" id="message_new" class="" placeholder="<fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgMessage" />" style="width:95%;" value="">
+    </div>
+    <div class="col-sm-3 ">
+     <label for="schedule_new"><fmt:setBundle basename="oscarResources"/><fmt:message key="tickler.ticklerMain.msgDate" /></label><br><input type="number" id="timeUnits_new" class="" style="width:50px;" value="0"><select id="schedule_new">
+            <option value="1"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.days" /></option>
+            <option value="7"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.weeks" /></option>
+            <option value="30"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.months" /></option>
+            <option value="365"><fmt:setBundle basename="oscarResources"/><fmt:message key="global.years" /></option>
+        </select>
+    </div>
+    <div class="col-sm-2">
+        &nbsp;<input type="button" id="add_new" class="btn btn-link" value="Add" style="visibility:hidden;">
+    </div>
+</div>
+
+
+  <div class="form-group row">
+<br>
+    <div class="col-sm-5 col-sm-offset-1">
+        <input type="submit" class="btn btn-primary" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSave" />" onclick="assembleJSON();"/>
+<input type="button" class="btn" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnClose" />" onclick="window.close();"/>
+<a href="javascript:void(0);" onclick="toggleMe(document.getElementById('raw'));" style="color:grey">Show macro JSON</a>
+    </div>
+    <div class="col-sm-5 ">
+
+    </div>
+  </div>
+<div>
+</div>
+  <div class="form-group row" style="display:none;" id="raw">
+  <textarea name="labMacroJSON.value" id="macroJSON" style="width:80%;height:80%" rows="25"><%=Encode.forHtmlAttribute((up != null && !StringUtils.isEmpty(up.getValue()))?up.getValue():"")%></textarea>
+  <input type="submit" class="btn" value="<fmt:setBundle basename="oscarResources"/><fmt:message key="global.btnSave" />" />
+  </div>
+</div>
+</form>
+</body>
+</html>
