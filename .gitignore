@@ -16,3 +16,4 @@ oscar.iml
 src/main/resources/uiResources_*.properties
 *.DS_Store
 *.swp
+oscar-ui/node_modules/
