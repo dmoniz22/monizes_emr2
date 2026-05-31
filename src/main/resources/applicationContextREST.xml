@@ -82,6 +82,7 @@
 			<bean class="org.oscarehr.ws.oauth.OAuthStatusService" autowire="byName" />
 			<bean class="org.oscarehr.ws.rest.PharmacyService"  autowire="byName"/>
 			<bean class="org.oscarehr.ws.rest.DemographicService"  autowire="byName"/>
+			<bean class="org.oscarehr.ws.rest.AiIntakeService"  autowire="byName"/>
 			<bean class="org.oscarehr.ws.rest.ScheduleService"  autowire="byName"/>
 			<bean class="org.oscarehr.ws.rest.DemographicMergeService"  autowire="byName"/>
 			<bean class="org.oscarehr.ws.rest.MessagingService"  autowire="byName"/>
