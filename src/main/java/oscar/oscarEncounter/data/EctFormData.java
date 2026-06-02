@@ -118,7 +118,11 @@ public class EctFormData {
 		for (EncounterForm encounterForm : encounterForms) {
 			String table = StringUtils.trimToNull(encounterForm.getFormTable());
 			if (table != null) {
-				allResults.addAll(getGroupedPatientFormsAsArrayList(demographicId.toString(), encounterForm.getFormName(), table, encounterForm.getFormValue()));
+				try {
+					allResults.addAll(getGroupedPatientFormsAsArrayList(demographicId.toString(), encounterForm.getFormName(), table, encounterForm.getFormValue()));
+				} catch (Exception e) {
+					logger.warn("Error loading form data from table: " + table, e);
+				}
 			}
 		}
 
