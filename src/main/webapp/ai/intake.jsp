@@ -9,6 +9,6 @@
 </head>
 <body style="margin:0;font-family:system-ui;">
     <div id="ai-intake-root">Loading AI Smart Intake...</div>
-    <script src="<%=request.getContextPath()%>/js/oscar-ui/ai-intake.bundle.js"></script>
+    <script type="module" src="<%=request.getContextPath()%>/js/oscar-ui/ai-intake.bundle.js"></script>
 </body>
 </html>

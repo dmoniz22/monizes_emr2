@@ -42,7 +42,8 @@ function SmartIntake() {
 		const data = merge();
 		const form = document.createElement("form");
 		form.method = "POST";
-		form.action = window.location.origin + "/oscar/ws/rs/ai/intake/create";
+		form.action = "/oscar/ai/create_patient.jsp";
+		form.target = "_self";
 		for (const [key, value] of Object.entries(data)) {
 			if (value === null || value === void 0) continue;
 			const input = document.createElement("input");
