@@ -1,5 +1,6 @@
 import { a as require_jsx_runtime, c as __toESM, i as Button, n as Tabs, o as require_client, r as Card, s as require_react, t as Badge } from "./chunks/variables-7eGJi_MU.js";
-import { n as Input, t as Select } from "./chunks/Select-C4wwGViC.js";
+import { t as Input } from "./chunks/Input-BnBEo0IQ.js";
+import { t as Select } from "./chunks/Select-Dek2jRfi.js";
 import { t as Modal } from "./chunks/Modal-BeOi3ASz.js";
 //#region src/clinical/index.tsx
 var import_client = require_client();
