@@ -37,6 +37,8 @@
     if (postal != null && !postal.isEmpty()) d.setPostal(postal);
     d.setProviderNo(loggedInInfo.getLoggedInProviderNo());
     d.setMiddleNames("");
+    d.setSex("U");
+    d.setHcType("BC");
     
     if (dob != null && dob.length() >= 10) {
         d.setYearOfBirth(dob.substring(0, 4));
@@ -55,6 +57,7 @@
                 al.setDemographicNo(d.getDemographicNo());
                 al.setDescription(a);
                 al.setEntryDate(new Date());
+                al.setTypeCode(0);
                 allergyList.add(al);
             }
         }
