@@ -35,8 +35,8 @@
     if (city != null && !city.isEmpty()) d.setCity(city);
     if (province != null && !province.isEmpty()) d.setProvince(province);
     if (postal != null && !postal.isEmpty()) d.setPostal(postal);
-    d.setSex("U");
     d.setProviderNo(loggedInInfo.getLoggedInProviderNo());
+    d.setMiddleNames("");
     
     if (dob != null && dob.length() >= 10) {
         d.setYearOfBirth(dob.substring(0, 4));
