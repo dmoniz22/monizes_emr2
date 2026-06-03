@@ -1,5 +1,6 @@
-import { a as require_jsx_runtime, c as __toESM, i as Button, n as Tabs, o as require_client, r as Card, s as require_react, t as Badge } from "./chunks/variables-7eGJi_MU.js";
-import { t as Input } from "./chunks/Input-BnBEo0IQ.js";
+import { i as __toESM, n as require_client, r as require_react, t as require_jsx_runtime } from "./chunks/variables-CHO5ILYh.js";
+import { i as Button, n as Tabs, r as Card, t as Badge } from "./chunks/Badge-DPVdTRGe.js";
+import { t as Input } from "./chunks/Input-q0oFEVa4.js";
 //#region src/entries/workflow-panel.tsx
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 var import_client = require_client();
