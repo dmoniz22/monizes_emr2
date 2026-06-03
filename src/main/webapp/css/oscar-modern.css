@@ -1,0 +1,221 @@
+/* Oscar Modern CSS Override
+ * Applies design system styles to existing JSP pages without modifying them */
+
+:root {
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  --color-success: #16a34a;
+  --color-success-light: #dcfce7;
+  --color-warning: #d97706;
+  --color-error: #dc2626;
+  --color-error-light: #fee2e2;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+  --transition-fast: 150ms ease;
+}
+
+/* Global reset improvements */
+body, table, input, select, textarea, button {
+  font-family: var(--font-sans) !important;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-900);
+}
+
+/* Modern header bar */
+#header, .Header, div[style*="background-color"], table[style*="background"] {
+  background: linear-gradient(135deg, var(--color-primary-700), var(--color-primary-600)) !important;
+  color: #fff !important;
+  font-family: var(--font-sans) !important;
+  box-shadow: var(--shadow-md);
+}
+
+/* Modernize tables */
+table, .oscarTable, .borderedTable {
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-neutral-200);
+}
+
+table th, table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-neutral-100);
+  text-align: left;
+}
+
+table th {
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-700);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+table tr:hover {
+  background: var(--color-primary-50);
+}
+
+/* Modernize form elements */
+input[type="text"], input[type="password"], input[type="number"], 
+input[type="email"], input[type="date"], textarea, select {
+  padding: 8px 12px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px var(--color-primary-100);
+}
+
+/* Modernize buttons */
+input[type="submit"], input[type="button"], button, .btn, a.button {
+  background: var(--color-primary-600);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  transition: background var(--transition-fast);
+  text-decoration: none;
+  display: inline-block;
+}
+
+input[type="submit"]:hover, button:hover, .btn:hover {
+  background: var(--color-primary-700);
+}
+
+/* Modernize links */
+a {
+  color: var(--color-primary-600);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+/* Modernize cards/panels */
+.infobox, .well, .panel, div[style*="border"] {
+  background: #fff;
+  border: 1px solid var(--color-neutral-200) !important;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
+}
+
+/* Tabs modernization */
+.tab, .dojoTab, .nav-tabs li {
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  padding: 8px 16px;
+  font-family: var(--font-sans);
+  margin-right: 2px;
+  cursor: pointer;
+}
+
+.tab.active, .dojoTab.active, .nav-tabs li.active {
+  background: #fff;
+  border-bottom-color: #fff;
+  color: var(--color-primary-700);
+  font-weight: 600;
+}
+
+/* Navigation sidebar */
+.sidebar, .leftNav, #leftNav, .nav, #menu {
+  background: #fff;
+  border-right: 1px solid var(--color-neutral-200);
+  box-shadow: var(--shadow-sm);
+}
+
+.sidebar a, .leftNav a, .nav a {
+  display: block;
+  padding: 8px 16px;
+  color: var(--color-neutral-700);
+  border-radius: var(--radius-md);
+  margin: 2px 8px;
+  transition: background var(--transition-fast);
+}
+
+.sidebar a:hover, .leftNav a:hover, .nav a:hover {
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+  text-decoration: none;
+}
+
+/* Success/error/warning messaging */
+.alert-success, .message-success {
+  background: var(--color-success-light);
+  color: var(--color-success);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+
+.alert-error, .message-error {
+  background: var(--color-error-light);
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+}
+
+/* Patient header bar */
+.patient-header, .demographic-header {
+  background: var(--color-primary-700);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Search results */
+.search-result, .patient-card {
+  background: #fff;
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast);
+}
+
+.search-result:hover, .patient-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Loading states */
+.loading, .spinner {
+  color: var(--color-primary-500);
+}
