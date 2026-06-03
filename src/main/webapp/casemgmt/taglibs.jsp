@@ -48,4 +48,3 @@
 
 <%@ taglib uri="/WEB-INF/oscarProperties-tag.tld" prefix="oscarProperties"%>
 <%@ taglib uri="/WEB-INF/indivo-tag.tld" prefix="indivo"%>
-<link href="<%=request.getContextPath() %>/css/oscar-modern.css" rel="stylesheet" type="text/css">

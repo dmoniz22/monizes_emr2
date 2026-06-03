@@ -43,4 +43,3 @@
 <%@ taglib uri="http://struts-menu.sf.net/tag" prefix="menu"%>
 <%@ taglib uri="http://struts-menu.sf.net/tag-el" prefix="menu-el"%>
 <%@ taglib uri="/WEB-INF/security.tld" prefix="security"%>
-<link href="<%=request.getContextPath() %>/css/oscar-modern.css" rel="stylesheet" type="text/css">
