@@ -1,5 +1,6 @@
-import { i as __toESM, n as require_client, r as require_react, t as require_jsx_runtime } from "./chunks/variables-CHO5ILYh.js";
-import { i as Button, n as Tabs, r as Card, t as Badge } from "./chunks/Badge-DPVdTRGe.js";
+import { i as __toESM, n as require_client, r as require_react, t as require_jsx_runtime } from "./chunks/jsx-runtime-CV8b5LSl.js";
+import { i as Button, n as Tabs, r as Card, t as Badge } from "./chunks/Badge-B5Ss0JGR.js";
+/* empty css                          */
 //#region src/entries/ai-scribe.tsx
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 var import_client = require_client();

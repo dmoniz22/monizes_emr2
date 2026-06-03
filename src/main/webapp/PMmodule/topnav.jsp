@@ -185,7 +185,7 @@ if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.Is
 					</security:oscarSec>
 				</oscar:oscarPropertiesCheck>
 				<li>
-					<a href='<html:rewrite page="/PMmodule/ProviderInfo.do"/>'>Program</a>
+					<a href='<html:rewrite page="/ai/dashboard.jsp"/>'>Program</a>
 				</li>
 			</ul>
 
@@ -197,7 +197,7 @@ if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.Is
 			&nbsp;
 			<a href=# onClick ="popupPage(600,750,'http://www.oscarcanada.org/manual/oscar-caisi-documentation/');return false;" style="color:rgba(255,255,255,0.85) !important;font-size:12px;text-decoration:none;">Help</a>
 			&nbsp;
-			<a href='<html:rewrite page="/PMmodule/ProviderInfo.do"/>' style="color:rgba(255,255,255,0.85) !important;font-size:12px;text-decoration:none;">Home</a>
+			<a href='<html:rewrite page="/ai/dashboard.jsp"/>' style="color:rgba(255,255,255,0.85) !important;font-size:12px;text-decoration:none;">Home</a>
 			&nbsp;
 			<a href="<html:rewrite page="/logout.jsp"/>" style="color:rgba(255,255,255,0.85) !important;font-size:12px;text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,0.3);border-radius:4px;">Logout</a>
 		</td>
