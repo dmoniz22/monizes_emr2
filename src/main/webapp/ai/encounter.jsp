@@ -1,5 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%
+  String demoNo = request.getParameter("demographicNo");
+  if (demoNo == null) demoNo = "";
+  String demoName = request.getParameter("name");
+  if (demoName == null) demoName = "";
+%>
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>OSCAR AI Encounter</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/js/oscar-ui/assets/variables-DTRBujtH.css"></head>
-<body style="margin:0;overflow:hidden;"><div id="encounter-root"></div>
+<body style="margin:0;overflow:hidden;">
+<div id="encounter-root" data-demo-no="<%= demoNo %>" data-demo-name="<%= demoName %>"></div>
 <script type="module" src="<%=request.getContextPath()%>/js/oscar-ui/encounter-workspace.bundle.js"></script></body></html>

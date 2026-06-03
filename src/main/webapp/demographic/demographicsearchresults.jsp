@@ -498,6 +498,9 @@ session.setAttribute("labSex","");
 			objectName="_eChart" rights="r">
 			<a class="encounterBtn" title="Encounter" href="#"
 				onclick="popupEChart(710,1024,'<c:out value="${ctx}"/>/oscarEncounter/IncomingEncounter.do?providerNo=<%=curProvider_no%>&appointmentNo=&demographicNo=<%=dem_no%>&curProviderNo=&reason=<%=URLEncoder.encode(noteReason)%>&encType=&curDate=<%=""+curYear%>-<%=""+curMonth%>-<%=""+curDay%>&appointmentDate=&startTime=&status=','E');return false;">E</a>
+			<a class="encounterBtn ai-encounter-btn" title="AI Encounter" href="#"
+				onclick="popupEChart(710,1024,'<c:out value="${ctx}"/>/ai/encounter.jsp?demographicNo=<%=dem_no%>','AI<%=dem_no%>');return false;"
+				style="background:#2563eb !important;color:#fff !important;font-weight:600;">AI</a>
 		</security:oscarSec> <!-- Rights --> <security:oscarSec roleName="<%=roleName$%>"
 			objectName="_rx" rights="r">
 			<a class="rxBtn" title="Prescriptions" href="#" onclick="popup(700,1027,'../oscarRx/choosePatient.do?providerNo=<%=demo.getProviderNo()%>&demographicNo=<%=dem_no%>','Rx<%=dem_no%>')">Rx</a>

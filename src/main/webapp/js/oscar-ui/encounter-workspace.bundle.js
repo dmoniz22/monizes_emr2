@@ -788,7 +788,12 @@ function EditableSec({ label, value, onChange }) {
 	})] });
 }
 var el = document.getElementById("encounter-root");
-if (el) (0, import_client.createRoot)(el).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(EncounterWorkspace, {}));
+if (el) {
+	const demoNo = el.dataset.demoNo || "";
+	el.dataset.demoName;
+	if (demoNo) el.setAttribute("data-loaded", "true");
+	(0, import_client.createRoot)(el).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(EncounterWorkspace, {}));
+}
 //#endregion
 
 //# sourceMappingURL=encounter-workspace.bundle.js.map
