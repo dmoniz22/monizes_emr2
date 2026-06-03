@@ -117,6 +117,8 @@ if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.Is
 				</li>
 				</security:oscarSec>
 				<security:oscarSec roleName="<%=roleName$%>" objectName="_report" rights="r">
+<%-- continuing existing logic --%>
+
 				<li>
 					<a HREF="#" ONCLICK ="popupPage2('<html:rewrite page="/report/reportindex.jsp"/>','reportPage');return false;" title="<bean:message key="global.genReport"/>"><u>R</u>eport</a>
 				</li>
@@ -188,28 +190,20 @@ if (org.oscarehr.common.IsPropertiesOn.isCaisiEnable() && org.oscarehr.common.Is
 			</ul>
 
 		</td>
-		<td align="right" valign="bottom">
- 			<a href="javascript: function myFunction() {return false; }" onClick="popup(700,1000,'<html:rewrite page="/scratch/index.jsp"/>','scratch')"><span id="oscar_scratch"></span></a>
-  			&nbsp;&nbsp;
-			<a href=# onClick ="popupPage(600,750,'http://www.oscarcanada.org/manual/oscar-caisi-documentation/');return false;"><u>H</u>elp</a>
+		<td align="right" valign="bottom" style="font-size:13px;color:rgba(255,255,255,0.9) !important;white-space:nowrap;">
+			<strong style="font-weight:600;color:#fff !important;"><%=userfirstname %> <%=userlastname %></strong>
+			&nbsp;&nbsp;
+  			<a href="javascript:void(0)" onClick="popup(700,1000,'<html:rewrite page="/scratch/index.jsp"/>','scratch')" style="color:rgba(255,255,255,0.85) !important;font-size:12px;text-decoration:none;">Scratch</a>
 			&nbsp;
-			<a href='<html:rewrite page="/PMmodule/ProviderInfo.do"/>'>Home</a> |
-			<a href="<html:rewrite page="/logout.jsp"/>">Lo<u>g</u>out</a>
+			<a href=# onClick ="popupPage(600,750,'http://www.oscarcanada.org/manual/oscar-caisi-documentation/');return false;" style="color:rgba(255,255,255,0.85) !important;font-size:12px;text-decoration:none;">Help</a>
+			&nbsp;
+			<a href='<html:rewrite page="/PMmodule/ProviderInfo.do"/>' style="color:rgba(255,255,255,0.85) !important;font-size:12px;text-decoration:none;">Home</a>
+			&nbsp;
+			<a href="<html:rewrite page="/logout.jsp"/>" style="color:rgba(255,255,255,0.85) !important;font-size:12px;text-decoration:none;padding:4px 10px;border:1px solid rgba(255,255,255,0.3);border-radius:4px;">Logout</a>
 		</td>
 	</tr>
 </table>
-<table width="100%" border="1">
-<tr>
-	<td width="50%"></td>
-	<td width="50%" align="right"><b>Hello &nbsp; <%=userfirstname %> &nbsp;<%=userlastname %></b>
-	</td>
-</tr>
-<tr><td colspan="2">
-<c:import url="/SystemMessage.do?method=view" />
-</td>
-</tr>
-<tr><td colspan="2">
-<c:import url="/FacilityMessage.do?method=view" />
-</td>
-</tr>
-</table>
+<div style="background:#fef3c7;padding:6px 16px;font-size:12px;color:#92400e;border-bottom:1px solid #fcd34d;">
+	<c:import url="/SystemMessage.do?method=view" />
+	<c:import url="/FacilityMessage.do?method=view" />
+</div>

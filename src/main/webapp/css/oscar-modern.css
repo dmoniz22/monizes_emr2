@@ -1,221 +1,296 @@
-/* Oscar Modern CSS Override
- * Applies design system styles to existing JSP pages without modifying them */
+/* === AGGRESSIVE MODERN OVERRIDES for Oscar 2006-era JSPs === */
+/* These use !important to override pervasive inline styles */
 
-:root {
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-neutral-50: #fafafa;
-  --color-neutral-100: #f5f5f5;
-  --color-neutral-200: #e5e5e5;
-  --color-neutral-300: #d4d4d4;
-  --color-neutral-500: #737373;
-  --color-neutral-600: #525252;
-  --color-neutral-700: #404040;
-  --color-neutral-800: #262626;
-  --color-neutral-900: #171717;
-  --color-success: #16a34a;
-  --color-success-light: #dcfce7;
-  --color-warning: #d97706;
-  --color-error: #dc2626;
-  --color-error-light: #fee2e2;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-  --transition-fast: 150ms ease;
+/* === GLOBAL FONT & COLOR RESET === */
+* {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
 
-/* Global reset improvements */
-body, table, input, select, textarea, button {
-  font-family: var(--font-sans) !important;
-  font-size: 14px;
-  -webkit-font-smoothing: antialiased;
+body, html {
+  background: #f5f6fa !important;
+  color: #1a1a2e !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
 }
 
-body {
-  background: var(--color-neutral-50);
-  color: var(--color-neutral-900);
-}
-
-/* Modern header bar */
-#header, .Header, div[style*="background-color"], table[style*="background"] {
-  background: linear-gradient(135deg, var(--color-primary-700), var(--color-primary-600)) !important;
+/* === TOP NAVIGATION BAR === */
+table.topnav, table#firstTable {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%) !important;
   color: #fff !important;
-  font-family: var(--font-sans) !important;
-  box-shadow: var(--shadow-md);
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15) !important;
+  width: 100% !important;
+  border-radius: 0 !important;
 }
 
-/* Modernize tables */
-table, .oscarTable, .borderedTable {
-  border-collapse: collapse;
-  background: #fff;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-neutral-200);
+table.topnav td, table#firstTable td {
+  background: transparent !important;
+  color: #fff !important;
+  padding: 6px 16px !important;
+  font-size: 13px !important;
 }
 
-table th, table td {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--color-neutral-100);
-  text-align: left;
+table.topnav td[align], table#firstTable td[align] {
+  text-align: left !important;
 }
 
-table th {
-  background: var(--color-neutral-50);
-  color: var(--color-neutral-700);
-  font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+table.topnav img, table#firstTable img {
+  filter: brightness(10) !important;
+  height: 28px !important;
 }
 
-table tr:hover {
-  background: var(--color-primary-50);
+/* Topnav links */
+#navlist {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  gap: 2px !important;
 }
 
-/* Modernize form elements */
-input[type="text"], input[type="password"], input[type="number"], 
-input[type="email"], input[type="date"], textarea, select {
-  padding: 8px 12px;
-  border: 1px solid var(--color-neutral-300);
-  border-radius: var(--radius-md);
-  outline: none;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+#navlist li {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#navlist li a {
+  display: inline-block !important;
+  padding: 6px 14px !important;
+  color: rgba(255,255,255,0.9) !important;
+  background: transparent !important;
+  border: none !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  border-radius: 6px !important;
+  transition: background 0.15s !important;
+}
+
+#navlist li a:hover {
+  background: rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+/* === ALL TABLES === */
+table:not(.topnav):not(#firstTable) {
+  background: #fff !important;
+  border-collapse: collapse !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+  border: 1px solid #e5e7eb !important;
+  margin: 0 !important;
+}
+
+table:not(.topnav):not(#firstTable) th {
+  background: #f8f9fa !important;
+  color: #4b5563 !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  padding: 10px 14px !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  text-align: left !important;
+}
+
+table:not(.topnav):not(#firstTable) td {
+  padding: 10px 14px !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+  font-size: 13px !important;
+  color: #374151 !important;
+  background: #fff !important;
+}
+
+table:not(.topnav):not(#firstTable) tr:hover td {
+  background: #f0f4ff !important;
+}
+
+table:not(.topnav):not(#firstTable) tr:nth-child(even) td {
+  background: #fafbfc !important;
+}
+
+/* === FORM ELEMENTS === */
+input[type="text"], input[type="password"], input[type="number"],
+input[type="email"], input[type="date"], input[type="search"],
+textarea, select {
+  padding: 8px 12px !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 6px !important;
+  font-size: 14px !important;
+  background: #fff !important;
+  color: #1f2937 !important;
+  outline: none !important;
+  transition: border-color 0.15s, box-shadow 0.15s !important;
+  box-sizing: border-box !important;
 }
 
 input:focus, textarea:focus, select:focus {
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px var(--color-primary-100);
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12) !important;
 }
 
-/* Modernize buttons */
-input[type="submit"], input[type="button"], button, .btn, a.button {
-  background: var(--color-primary-600);
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: var(--radius-md);
-  font-weight: 500;
-  cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: 13px;
-  transition: background var(--transition-fast);
-  text-decoration: none;
-  display: inline-block;
+/* === BUTTONS === */
+input[type="submit"], input[type="button"], button,
+input.button, a.button, .btn {
+  background: #2563eb !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: background 0.15s !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  line-height: 1.4 !important;
 }
 
-input[type="submit"]:hover, button:hover, .btn:hover {
-  background: var(--color-primary-700);
+input[type="submit"]:hover, input[type="button"]:hover, button:hover,
+input.button:hover, a.button:hover, .btn:hover {
+  background: #1d4ed8 !important;
+  text-decoration: none !important;
 }
 
-/* Modernize links */
-a {
-  color: var(--color-primary-600);
-  text-decoration: none;
-}
-a:hover { text-decoration: underline; }
-
-/* Modernize cards/panels */
-.infobox, .well, .panel, div[style*="border"] {
-  background: #fff;
-  border: 1px solid var(--color-neutral-200) !important;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: 16px;
+/* Secondary/ghost buttons (grey background) */
+input[type="button"][style*="background"], 
+input[type="submit"][style*="background"] {
+  background: #e5e7eb !important;
+  color: #374151 !important;
 }
 
-/* Tabs modernization */
-.tab, .dojoTab, .nav-tabs li {
-  background: var(--color-neutral-100);
-  border: 1px solid var(--color-neutral-200);
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-  padding: 8px 16px;
-  font-family: var(--font-sans);
-  margin-right: 2px;
-  cursor: pointer;
+/* === LINKS === */
+a:not(#navlist a) {
+  color: #2563eb !important;
+  text-decoration: none !important;
+  transition: color 0.15s !important;
+}
+a:hover {
+  color: #1d4ed8 !important;
+  text-decoration: underline !important;
 }
 
-.tab.active, .dojoTab.active, .nav-tabs li.active {
-  background: #fff;
-  border-bottom-color: #fff;
-  color: var(--color-primary-700);
-  font-weight: 600;
+/* === HEADINGS === */
+h1, h2, h3, h4 {
+  color: #1a1a2e !important;
+  font-weight: 600 !important;
 }
 
-/* Navigation sidebar */
-.sidebar, .leftNav, #leftNav, .nav, #menu {
-  background: #fff;
-  border-right: 1px solid var(--color-neutral-200);
-  box-shadow: var(--shadow-sm);
+h1 { font-size: 22px !important; }
+h2 { font-size: 18px !important; }
+h3 { font-size: 16px !important; }
+h4 { font-size: 14px !important; }
+
+/* === SIDEBAR/NAVIGATION === */
+td[width][valign="top"]:first-child,
+.sidebar, .leftNav {
+  background: #fff !important;
+  border-right: 1px solid #e5e7eb !important;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.04) !important;
 }
 
-.sidebar a, .leftNav a, .nav a {
-  display: block;
-  padding: 8px 16px;
-  color: var(--color-neutral-700);
-  border-radius: var(--radius-md);
-  margin: 2px 8px;
-  transition: background var(--transition-fast);
+td[width][valign="top"]:first-child a {
+  display: block !important;
+  padding: 8px 12px !important;
+  color: #4b5563 !important;
+  border-radius: 4px !important;
+  margin: 2px 6px !important;
+  font-size: 13px !important;
 }
 
-.sidebar a:hover, .leftNav a:hover, .nav a:hover {
-  background: var(--color-primary-50);
-  color: var(--color-primary-700);
-  text-decoration: none;
+td[width][valign="top"]:first-child a:hover {
+  background: #eff6ff !important;
+  color: #2563eb !important;
+  text-decoration: none !important;
 }
 
-/* Success/error/warning messaging */
-.alert-success, .message-success {
-  background: var(--color-success-light);
-  color: var(--color-success);
-  border: 1px solid var(--color-success);
-  border-radius: var(--radius-md);
-  padding: 12px 16px;
+/* === CARDS / PANELS / INFO BOXES === */
+.infobox, .well, .panel, .cardBox,
+div[style*="border"][style*="solid"],
+div[style*="background-color"],
+div[style*="background:"],
+td[style*="background-color"] {
+  background: #fff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+  padding: 16px !important;
 }
 
-.alert-error, .message-error {
-  background: var(--color-error-light);
-  color: var(--color-error);
-  border: 1px solid var(--color-error);
-  border-radius: var(--radius-md);
-  padding: 12px 16px;
+/* === PATIENT HEADER BARS === */
+tr[style*="background-color:#CCCCFF"],
+tr[style*="background:#CCCCFF"],
+div[style*="background-color:#CCCCFF"] {
+  background: linear-gradient(135deg, #1e3a8a, #2563eb) !important;
+  color: #fff !important;
+  border-radius: 8px 8px 0 0 !important;
+  padding: 10px 16px !important;
 }
 
-/* Patient header bar */
-.patient-header, .demographic-header {
-  background: var(--color-primary-700);
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  font-weight: 500;
+tr[style*="background-color:#CCCCFF"] td,
+tr[style*="background:#CCCCFF"] td,
+div[style*="background-color:#CCCCFF"] * {
+  color: #fff !important;
 }
 
-/* Search results */
-.search-result, .patient-card {
-  background: #fff;
-  border: 1px solid var(--color-neutral-200);
-  border-radius: var(--radius-lg);
-  padding: 12px 16px;
-  margin-bottom: 8px;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition-fast);
+/* === SCROLLBARS === */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #a1a1a1; }
+
+/* === MODALS/DIALOGS === */
+div[style*="position:absolute"], div[style*="position: absolute"] {
+  border-radius: 10px !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2) !important;
 }
 
-.search-result:hover, .patient-card:hover {
-  box-shadow: var(--shadow-md);
+/* === TABLES WITH COLORED HEADERS === */
+tr[style*="background-color:#EEEEFF"] td,
+tr[style*="background:#EEEEFF"] td {
+  background: #f0f4ff !important;
+  font-weight: 600 !important;
 }
 
-/* Loading states */
-.loading, .spinner {
-  color: var(--color-primary-500);
+/* === MESSAGES/ALERTS === */
+div[style*="color: red"], .error, .errorMessage {
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
+  padding: 10px 14px !important;
+  border-radius: 6px !important;
+  border: 1px solid #fecaca !important;
+  font-size: 13px !important;
+}
+
+div[style*="color: green"], .success, .successMessage {
+  background: #f0fdf4 !important;
+  color: #16a34a !important;
+  padding: 10px 14px !important;
+  border-radius: 6px !important;
+  border: 1px solid #bbf7d0 !important;
+  font-size: 13px !important;
+}
+
+/* === TABS === */
+li[style*="float:left"], .tab, .dojoTab {
+  display: inline-block !important;
+  padding: 8px 16px !important;
+  background: #f3f4f6 !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 6px 6px 0 0 !important;
+  margin-right: 2px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #6b7280 !important;
+  cursor: pointer !important;
+}
+
+li[style*="float:left"]:hover, .tab:hover, .dojoTab:hover {
+  background: #e5e7eb !important;
+  color: #374151 !important;
 }
