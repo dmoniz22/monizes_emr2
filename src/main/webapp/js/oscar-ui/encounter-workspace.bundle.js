@@ -86,14 +86,9 @@ function EncounterWorkspace() {
 	const [tab, setTab] = (0, import_react.useState)("scribe");
 	const [edited, setEdited] = (0, import_react.useState)({});
 	const { recording, start, stop } = useRecorder();
-	const [patient, setPatient] = (0, import_react.useState)({
-		name: "Sarah Johnson",
-		age: "36",
-		sex: "F",
-		phn: "9876-543-21-BC",
-		provider: "Dr. Smith"
-	});
-	const [vitals, setVitals] = (0, import_react.useState)([
+	const [patient, setPatient] = (0, import_react.useState)(null);
+	const [patientId, setPatientId] = (0, import_react.useState)("");
+	const [vitals] = (0, import_react.useState)([
 		{
 			l: "BP",
 			v: "128/82",
@@ -119,33 +114,30 @@ function EncounterWorkspace() {
 			t: "stable"
 		}
 	]);
-	const [problems, setProblems] = (0, import_react.useState)([{
-		c: "E11.9",
-		n: "Type 2 Diabetes",
-		s: "active"
-	}, {
-		c: "I10",
-		n: "Hypertension",
-		s: "active"
-	}]);
-	const [meds, setMeds] = (0, import_react.useState)([{
-		n: "Metformin",
-		d: "500mg",
-		r: "BID"
-	}, {
-		n: "Ramipril",
-		d: "5mg",
-		r: "daily"
-	}]);
-	const [allergies, setAllergies] = (0, import_react.useState)(["Penicillin", "Sulfa"]);
-	const patientCtx = {
+	const [problems, setProblems] = (0, import_react.useState)([]);
+	const [meds, setMeds] = (0, import_react.useState)([]);
+	const [allergies, setAllergies] = (0, import_react.useState)([]);
+	(0, import_react.useEffect)(() => {
+		const demoNo = document.getElementById("encounter-root")?.dataset.demoNo || "";
+		setPatientId(demoNo);
+		if (demoNo) fetch(`${AI}/api/v1/patient/${demoNo}`).then((r) => r.json()).then((data) => {
+			setPatient(data);
+			setProblems(data.problems || []);
+			setMeds(data.medications || []);
+			setAllergies(data.allergies || []);
+		}).catch(() => {});
+	}, []);
+	const patientCtx = patient ? {
 		name: patient.name,
-		age: patient.age,
+		age: patient.dob ? (/* @__PURE__ */ new Date()).getFullYear() - parseInt(patient.dob.substring(0, 4)) : "",
 		sex: patient.sex,
-		problems: problems.map((p) => p.n).join(", "),
-		medications: meds.map((m) => `${m.n} ${m.d}`).join(", "),
+		problems: problems.map((p) => p.name).join(", "),
+		medications: meds.map((m) => `${m.name}`).join(", "),
 		allergies: allergies.join(", ")
-	};
+	} : {};
+	const displayDob = patient?.dob || "";
+	const age = displayDob ? (/* @__PURE__ */ new Date()).getFullYear() - parseInt(displayDob.substring(0, 4)) : "";
+	const allergiesCount = allergies.length;
 	const handleRecord = async () => {
 		if (recording) {
 			setLoading(true);
@@ -244,7 +236,7 @@ function EncounterWorkspace() {
 								fontSize: 14,
 								fontWeight: 500
 							},
-							children: patient.name
+							children: patient?.name || "Loading..."
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 							style: {
@@ -252,17 +244,18 @@ function EncounterWorkspace() {
 								opacity: .8
 							},
 							children: [
-								"DOB: ",
-								patient.age,
-								"y | ",
-								patient.sex,
+								displayDob && `DOB: ${displayDob}`,
+								" ",
+								age && `(${age}y)`,
+								" | ",
+								patient?.sex,
 								" | PHN: ",
-								patient.phn
+								patient?.hin
 							]
 						}),
-						allergies.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
+						allergiesCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Badge, {
 							variant: "error",
-							children: [allergies.length, " allergies"]
+							children: [allergiesCount, " allergies"]
 						})
 					]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
@@ -270,7 +263,7 @@ function EncounterWorkspace() {
 						fontSize: 13,
 						opacity: .8
 					},
-					children: patient.provider
+					children: patient?.provider_no
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
