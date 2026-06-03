@@ -220,7 +220,7 @@ function EncounterWorkspace() {
 					style: {
 						display: "flex",
 						alignItems: "center",
-						gap: 20
+						gap: 16
 					},
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
@@ -258,12 +258,49 @@ function EncounterWorkspace() {
 							children: [allergiesCount, " allergies"]
 						})
 					]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					style: {
-						fontSize: 13,
-						opacity: .8
+						display: "flex",
+						alignItems: "center",
+						gap: 12,
+						fontSize: 12
 					},
-					children: patient?.provider_no
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+							href: `/oscar/demographic/demographiccontrol.jsp?demographic_no=${patientId}&displaymode=edit&dboperation=search_detail`,
+							target: "_blank",
+							style: "color:rgba(255,255,255,0.85);text-decoration:none;",
+							children: "Edit Patient"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+							href: `/oscar/oscarEncounter/IncomingEncounter.do?demographicNo=${patientId}`,
+							target: "_blank",
+							style: "color:rgba(255,255,255,0.85);text-decoration:none;padding:3px 8px;border:1px solid rgba(255,255,255,0.3);border-radius:4px;",
+							children: "Classic Encounter"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							style: { opacity: .7 },
+							children: "|"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+							href: "#",
+							onClick: () => window.open(`/oscar/oscarRx/choosePatient.do?demographicNo=${patientId}`, "Rx", "width=700,height=1027"),
+							style: "color:rgba(255,255,255,0.85);text-decoration:none;",
+							children: "Rx"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+							href: "#",
+							onClick: () => window.open(`/oscar/dms/inboxManage.do?method=prepareForIndexPage&demographicNo=${patientId}`, "Labs", "width=700,height=900"),
+							style: "color:rgba(255,255,255,0.85);text-decoration:none;",
+							children: "Labs"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+							href: "#",
+							onClick: () => window.open(`/oscar/oscarEncounter/IncomingEncounter.do?demographicNo=${patientId}`, "Forms", "width=710,height=1024"),
+							style: "color:rgba(255,255,255,0.85);text-decoration:none;",
+							children: "Forms"
+						})
+					]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -326,10 +363,10 @@ function EncounterWorkspace() {
 								}, i))
 							})
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 							title: "Active Problems",
 							style: { margin: "0 8px 8px" },
-							children: problems.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							children: [problems.length > 0 ? problems.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								style: {
 									display: "flex",
 									justifyContent: "space-between",
@@ -337,38 +374,74 @@ function EncounterWorkspace() {
 									fontSize: 13,
 									borderBottom: "1px solid #f3f4f6"
 								},
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: p.n }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: p.name }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 									style: {
 										fontSize: 11,
 										color: "#6b7280",
 										fontFamily: "monospace"
 									},
-									children: p.c
+									children: p.code
 								})]
-							}, i))
+							}, i)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								style: {
+									fontSize: 12,
+									color: "#9ca3af",
+									textAlign: "center",
+									padding: 8
+								},
+								children: "No active problems"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: `/oscar/demographic/demographiccontrol.jsp?demographic_no=${patientId}&displaymode=edit`,
+								target: "_blank",
+								style: {
+									fontSize: 11,
+									color: "#2563eb",
+									display: "block",
+									textAlign: "center",
+									marginTop: 6,
+									textDecoration: "none"
+								},
+								children: "Edit in Oscar →"
+							})]
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
 							title: "Medications",
 							style: { margin: "0 8px 8px" },
-							children: meds.map((m, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							children: [meds.length > 0 ? meds.map((m, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 								style: {
 									fontSize: 13,
 									padding: "4px 0",
 									borderBottom: "1px solid #f3f4f6"
 								},
 								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: m.n }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: m.name }),
 									" ",
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 										style: { color: "#6b7280" },
-										children: [
-											m.d,
-											" ",
-											m.r
-										]
+										children: m.frequency || ""
 									})
 								]
-							}, i))
+							}, i)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								style: {
+									fontSize: 12,
+									color: "#9ca3af",
+									textAlign: "center",
+									padding: 8
+								},
+								children: "No medications"
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+								href: "#",
+								onClick: () => window.open(`/oscar/oscarRx/choosePatient.do?demographicNo=${patientId}`, "Rx", "width=700,height=1027"),
+								style: {
+									fontSize: 11,
+									color: "#2563eb",
+									display: "block",
+									textAlign: "center",
+									marginTop: 6,
+									textDecoration: "none"
+								},
+								children: "Prescribe in Oscar →"
+							})]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
 							title: "Allergies",
@@ -379,10 +452,31 @@ function EncounterWorkspace() {
 									gap: 4,
 									flexWrap: "wrap"
 								},
-								children: allergies.map((a, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
+								children: allergies.length > 0 ? allergies.map((a, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Badge, {
 									variant: "warning",
-									children: a
-								}, i))
+									children: typeof a === "string" ? a : a.name
+								}, i)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+									style: {
+										fontSize: 12,
+										color: "#9ca3af"
+									},
+									children: "None recorded"
+								})
+							})
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							style: {
+								padding: "8px 16px",
+								marginTop: 8,
+								borderTop: "1px solid #e5e7eb"
+							},
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								style: {
+									fontSize: 11,
+									color: "#6b7280",
+									marginBottom: 4
+								},
+								children: "Clinical editing (problems, meds, allergies, forms, labs, referrals) uses Oscar's existing pages until each module gets its React replacement."
 							})
 						})
 					]
