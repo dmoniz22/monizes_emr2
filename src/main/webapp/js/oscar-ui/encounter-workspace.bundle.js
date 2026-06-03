@@ -176,28 +176,7 @@ function Encounter() {
 	const [error, setError] = (0, import_react.useState)("");
 	const [saved, setSaved] = (0, import_react.useState)(false);
 	const { recording, start, stop } = useRecorder();
-	const vitals = [
-		{
-			l: "BP",
-			v: "128/82",
-			u: "mmHg"
-		},
-		{
-			l: "HR",
-			v: "72",
-			u: "bpm"
-		},
-		{
-			l: "Temp",
-			v: "37.0",
-			u: "°C"
-		},
-		{
-			l: "O2",
-			v: "98",
-			u: "%"
-		}
-	];
+	const [vitals, setVitals] = (0, import_react.useState)([]);
 	(0, import_react.useEffect)(() => {
 		const no = document.getElementById("encounter-root")?.dataset.demoNo || "";
 		setPid(no);
@@ -207,6 +186,28 @@ function Encounter() {
 				setProblems(d.problems || []);
 				setMeds(d.medications || []);
 				setAllergies(d.allergies || []);
+				setVitals(d.vitals?.length ? d.vitals : [
+					{
+						l: "BP",
+						v: "--",
+						u: ""
+					},
+					{
+						l: "HR",
+						v: "--",
+						u: ""
+					},
+					{
+						l: "Temp",
+						v: "--",
+						u: ""
+					},
+					{
+						l: "O2",
+						v: "--",
+						u: ""
+					}
+				]);
 			}).catch(() => {});
 			fetch(`${AI}/api/v1/patient/${no}/encounters`).then((r) => r.json()).then((d) => setEncounters(d.encounters || [])).catch(() => {});
 		}
@@ -400,7 +401,7 @@ function Encounter() {
 									gridTemplateColumns: "1fr 1fr",
 									gap: 6
 								},
-								children: vitals.map((v, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								children: vitals.length > 0 ? vitals.map((v, i) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									style: {
 										textAlign: "center",
 										padding: 6,
@@ -413,19 +414,28 @@ function Encounter() {
 											fontWeight: 700,
 											color: "#1f2937"
 										},
-										children: v.v
+										children: v.v || v.label || v.l
 									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										style: {
 											fontSize: 10,
 											color: "#6b7280"
 										},
 										children: [
-											v.l,
+											v.l || v.label,
 											" ",
-											v.u
+											v.unit || v.u || ""
 										]
 									})]
-								}, i))
+								}, i)) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									style: {
+										fontSize: 11,
+										color: "#9ca3af",
+										textAlign: "center",
+										gridColumn: "span 2",
+										padding: 8
+									},
+									children: "No vitals recorded"
+								})
 							})
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
